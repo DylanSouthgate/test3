@@ -21,7 +21,6 @@
         hls.loadSource('https://edge1-vienna-sprintcdn.owphbf24.com/hls2/04/00026/ezr55u8sxlpk_x/master.m3u8?t=yb8vbGUIvvMeRFIl1cMqe11uh8K2xjtsJRBNcbFsTdA&s=1793565751&e=10800&f=48304935&srv=1050&asn=20011&sp=5500&p=0');
         hls.attachMedia(video);
         hls.on(Hls.Events.MEDIA_ATTACHED, function () {
-          video.muted = true;
           video.play();
         });
       }
