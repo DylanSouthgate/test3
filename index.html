@@ -1,1 +1,40 @@
-<iframe src='https://embedsports.me/union-internationals/stormers-vs-new-zealand-stream-1' width='100%' height='100%' scrolling='no' frameborder='0' allowfullscreen allowtransparency referrerpolicy='unsafe-url'></iframe>
+
+
+<html>
+  <head>
+    <title>Hls.js demo - basic usage</title>
+  </head>
+
+  <body>
+    <script src="https://hlsjs.video-dev.org/dist/hls.js"></script>
+
+    <center>
+      <h1>Hls.js demo - basic usage</h1>
+      <video height="600" id="video" controls></video>
+    </center>
+
+    <script>
+      var video = document.getElementById('video');
+      if (Hls.isSupported()) {
+        var hls = new Hls({
+          debug: true,
+        });
+        hls.loadSource('https://edge1-vienna-sprintcdn.owphbf24.com/hls2/04/00026/ezr55u8sxlpk_x/master.m3u8?t=yb8vbGUIvvMeRFIl1cMqe11uh8K2xjtsJRBNcbFsTdA&s=1793565751&e=10800&f=48304935&srv=1050&asn=20011&sp=5500&p=0');
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+          video.muted = true;
+          video.play();
+        });
+      }
+      // hls.js is not supported on platforms that do not have Media Source Extensions (MSE) enabled.
+      // When the browser has built-in HLS support (check using `canPlayType`), we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video element through the `src` property.
+      // This is using the built-in support of the plain video element, without using hls.js.
+      else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+        video.addEventListener('canplay', function () {
+          video.play();
+        });
+      }
+    </script>
+  <!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5f88d3068c5141af9fdad3535a40923f"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>
