@@ -1,1 +1,134 @@
-<a href="https://hplvv-41-132-50-198.run.pinggy-free.link/high">Link</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Go to ID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #e8eeea; --surface: #f7faf8; --ink: #12302c; --muted: #5b726d;
+    --line: #c3d1cb; --accent: #2547f5; --accent-ink: #ffffff; --err: #b3261e;
+    --base: #4a625d;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1b19; --surface: #172826; --ink: #e6f1ed; --muted: #92aaa4;
+      --line: #2b413d; --accent: #7d93ff; --accent-ink: #0b1233; --err: #ff8a80; --base: #8fa7a1;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1b19; --surface: #172826; --ink: #e6f1ed; --muted: #92aaa4;
+    --line: #2b413d; --accent: #7d93ff; --accent-ink: #0b1233; --err: #ff8a80; --base: #8fa7a1;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: grid; place-items: center; padding: 24px;
+  }
+  main { width: 100%; max-width: 680px; }
+  h1 { font-size: clamp(2rem, 6vw, 3.25rem); line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; }
+  .lede { color: var(--muted); font-size: 1.05rem; line-height: 1.5; margin: 0 0 32px; max-width: 46ch; }
+
+  .bar {
+    display: flex; align-items: stretch; flex-wrap: wrap;
+    background: var(--surface); border: 2px solid var(--line); border-radius: 14px;
+    transition: border-color .15s, box-shadow .15s; overflow: hidden;
+  }
+  .bar:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent); }
+  .bar.invalid { border-color: var(--err); }
+  .base {
+    display: flex; align-items: center; padding: 0 0 0 18px; color: var(--base);
+    font-size: 1rem; white-space: nowrap; max-width: 100%; overflow-x: auto; scrollbar-width: none;
+  }
+  .base::-webkit-scrollbar { display: none; }
+  input {
+    flex: 1 1 140px; min-width: 0; border: 0; background: transparent; color: var(--ink);
+    font: inherit; font-size: 1.25rem; font-weight: 600; padding: 18px 18px 18px 2px; outline: none;
+  }
+  input::placeholder { color: color-mix(in srgb, var(--muted) 60%, transparent); font-weight: 400; }
+
+  .row { display: flex; gap: 14px; align-items: center; margin-top: 16px; flex-wrap: wrap; }
+  button {
+    font: inherit; font-weight: 600; font-size: 1.05rem; cursor: pointer; border: 0; border-radius: 12px;
+    background: var(--accent); color: var(--accent-ink); padding: 15px 28px; transition: transform .1s, filter .15s;
+  }
+  button:hover { filter: brightness(1.08); }
+  button:active { transform: translateY(1px); }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .hint { color: var(--muted); font-size: .95rem; flex: 1 1 200px; min-height: 1.4em; }
+  .hint.error { color: var(--err); }
+  .preview { margin-top: 28px; font-size: .95rem; color: var(--muted); word-break: break-all; }
+  .preview a { color: var(--accent); text-underline-offset: 3px; }
+  .preview[hidden] { display: none; }
+
+  @media (max-width: 520px) {
+    body { padding: 18px; align-items: start; padding-top: 12vh; }
+    .base { width: 100%; padding: 14px 18px 0; font-size: .9rem; }
+    input { flex-basis: 100%; padding: 6px 18px 16px; }
+    button { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Jump straight to any ID</h1>
+  <p class="lede">Type an ID and we’ll take you to its page. The full link builds as you type.</p>
+
+  <form id="form" novalidate>
+    <label for="id" class="sr" style="position:absolute;left:-9999px">ID</label>
+    <div class="bar" id="bar">
+      <span class="base" id="base"></span>
+      <input id="id" name="id" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="your-id" autofocus>
+    </div>
+    <div class="row">
+      <button type="submit">Open page</button>
+      <span class="hint" id="hint" role="status" aria-live="polite">Press Enter or tap Open page.</span>
+    </div>
+  </form>
+
+  <p class="preview" id="preview" hidden>Your link: <a id="link" href="#" target="_blank" rel="noopener"></a></p>
+</main>
+
+<script>
+  // Change this to your own link. The ID is added to the end.
+  const BASE_URL = "https://";
+
+  const $ = (s) => document.getElementById(s);
+  const input = $("id"), bar = $("bar"), hint = $("hint"), preview = $("preview"), link = $("link");
+  $("base").textContent = BASE_URL.replace(/^https?:\/\//, "");
+
+  const buildUrl = (v) => BASE_URL + encodeURIComponent(v.trim()) + "-41-132-50-198.free.pinggy.net";
+
+  function showHint(msg, isError) {
+    hint.textContent = msg;
+    hint.classList.toggle("error", !!isError);
+    bar.classList.toggle("invalid", !!isError);
+  }
+
+  input.addEventListener("input", () => {
+    const v = input.value.trim();
+    showHint("Press Enter or tap Open page.", false);
+    preview.hidden = !v;
+    if (v) { link.href = buildUrl(v); link.textContent = buildUrl(v); }
+  });
+
+  $("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v = input.value.trim();
+    if (!v) { showHint("Enter an ID to continue.", true); input.focus(); return; }
+    const url = buildUrl(v);
+    showHint("Opening " + v + "…", false);
+    try { (window.top || window).location.assign(url); }
+    catch (err) { window.open(url, "_blank", "noopener"); }
+  });
+</script>
+</body>
+</html>
